@@ -1,0 +1,15 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore server build folder (optional if you want to ignore any build artifacts)
+server/build/
+
+# Ignore .env files for security reasons
+.env
+
+# Ignore CSV file (if you don't want it to be committed)
+data.csv
+
+# Ignore server folder content except server.js
+server/*
+!server/server.js
