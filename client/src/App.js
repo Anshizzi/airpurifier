@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import Dashboard from "./components/Dashboard";
 
-function App() {
-  const [data, setData] = useState([]);
+const generateRandomData = () => {
+  const now = new Date();
+  return Array.from({ length: 10 }, (_, i) => ({
+    time: new Date(now.getTime() - i * 5000).toLocaleTimeString(),
+    value: (Math.random() * 100).toFixed(2), // Random pollution level between 0-100
+  })).reverse();
+};
+
+const App = () => {
+  const [data, setData] = useState(generateRandomData());
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/data"); // Backend API
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData(); // Fetch initially
-    const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    const interval = setInterval(() => {
+      setData(generateRandomData());
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div>
-      <h1>Real-Time Data</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Dashboard data={data} />
     </div>
   );
-}
+};
 
 export default App;
