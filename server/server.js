@@ -1,24 +1,46 @@
-require('dotenv').config();
-const app = require('./src/app');
-const mongoose = require('./src/config/db');
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config(); // Load .env variables
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Wait for 5 seconds before failing
-  socketTimeoutMS: 45000,         // Keep the connection alive for 45s
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch(err => console.error("MongoDB Connection Error:", err));
-
-const watchCSV = require('./src/utilis/csvReader');
-const updateCSV = require('./src/utilis/updateCSV'); // Simulated data updates
-
+const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Watch the CSV file for real-time updates
-watchCSV();
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// MongoDB Connection (Fixing Multiple Connection Issue)
+const mongoURI = process.env.MONGO_URI || "your-mongodb-uri-here";
+
+const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState === 1) {
+      console.log("✅ Already connected to MongoDB");
+      return;
+    }
+    
+    await mongoose.connect(mongoURI, {
+      serverSelectionTimeoutMS: 30000, // Increase timeout
+    });
+
+    console.log("✅ MongoDB Connected Successfully");
+  } catch (err) {
+    console.error("❌ MongoDB Connection Error:", err.message);
+    process.exit(1);
+  }
+};
+
+// Call the function to connect to MongoDB
+connectDB();
+
+// Sample Route
+app.get("/", (req, res) => {
+  res.send("Server is running!");
 });
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
