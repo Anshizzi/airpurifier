@@ -1,8 +1,8 @@
 require('dotenv').config();
-const app = require('./app');
+const app = require('./src/app');
 const mongoose = require('./src/config/db');
-const watchCSV = require('./src/utils/csvReader');
-const updateCSV = require('./src/utils/updateCSV'); // Simulated data updates
+const watchCSV = require('./src/utilis/csvReader');
+const updateCSV = require('./src/utilis/updateCSV'); // Simulated data updates
 
 const PORT = process.env.PORT || 5000;
 
