@@ -13,5 +13,4 @@ const Graph = ({ data }) => {
   );
 };
 
-
 export default Graph;

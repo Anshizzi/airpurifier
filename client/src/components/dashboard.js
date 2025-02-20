@@ -6,7 +6,7 @@ import DataTable from "./table";
 const Dashboard = ({ data }) => {
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>Air Pollution Levels</h1> {/* This appears on the top of the pg*/}
       <Graph data={data} />
       <SensorData data={data} />
       <DataTable data={data} />
