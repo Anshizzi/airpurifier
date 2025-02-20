@@ -19,4 +19,4 @@ const updateCSV = () => {
 };
 
 // Update CSV every 5 seconds
-setInterval(updateCSV, 5000);
+setInterval(updateCSV, 5001);
