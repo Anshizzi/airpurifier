@@ -1,0 +1,4 @@
+name,   value, timestamp
+Sensor1, 45,   2025-02-19T12:00:00Z
+Sensor2 ,78,  2025-02-19T12:01:00Z
+Sensor3 ,90,  2025-02-19T12:02:00Z
