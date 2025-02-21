@@ -8,11 +8,6 @@
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client"
   },
-
-  "dependencies": {
-    "concurrently": "^7.6.0"
-  },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Anshizzi/airpurifier.git"
@@ -24,6 +19,8 @@
   "bugs": {
     "url": "https://github.com/Anshizzi/airpurifier/issues"
   },
-  "homepage": "https://github.com/Anshizzi/airpurifier#readme"
- 
+  "homepage": "https://github.com/Anshizzi/airpurifier#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
