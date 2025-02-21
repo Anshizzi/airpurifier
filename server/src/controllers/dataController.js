@@ -1,10 +1,28 @@
-const DataModel = require('../models/DataModel');
+const fs = require('fs');
+const csv = require('csv-parser');
+const { Parser } = require('json2csv');
 
-exports.getData = async (req, res) => {
-  try {
-    const data = await DataModel.find().sort({ createdAt: -1 });
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching data', error });
-  }
+const getData = (req, res) => {
+    let results = [];
+    fs.createReadStream('sample.csv')
+      .pipe(csv())
+      .on('data', (data) => results.push(data))
+      .on('end', () => {
+          res.json(results);
+      });
 };
+
+const updateCSV = (req, res) => {
+    const newData = req.body;
+    
+    fs.appendFile('sample.csv', `\n${newData.id},${newData.name},${newData.score}`, (err) => {
+        if (err) {
+            console.error("❌ Error updating CSV:", err);
+            return res.status(500).json({ message: "Failed to update CSV" });
+        }
+        res.json({ message: "CSV updated successfully" });
+    });
+};
+
+module.exports = { getData, updateCSV };
+

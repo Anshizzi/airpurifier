@@ -10,8 +10,12 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection (Fixing Multiple Connection Issue)
-const mongoURI = process.env.MONGO_URI || "your-mongodb-uri-here";
+// ✅ Import and Use API Routes
+const dataRoutes = require("./src/routes/dataRoutes.js");
+app.use("/api", dataRoutes); // Now /api/data and /api/update will work
+
+// ✅ MongoDB Connection
+const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/yourDatabase";
 
 const connectDB = async () => {
   try {
@@ -20,9 +24,7 @@ const connectDB = async () => {
       return;
     }
     
-    await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 30000, // Increase timeout
-    });
+    await mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 30000 });
 
     console.log("✅ MongoDB Connected Successfully");
   } catch (err) {
@@ -34,13 +36,14 @@ const connectDB = async () => {
 // Call the function to connect to MongoDB
 connectDB();
 
-// Sample Route
+// ✅ Sample Route to Check Server
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start Server
+// ✅ Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+
 
