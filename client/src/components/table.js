@@ -3,19 +3,19 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 
 const DataTable = ({ data }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className="table-container">
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
-            <TableCell>Value</TableCell>
+            <TableCell style={{ color: "#61dafb", fontWeight: "bold" }}>Time</TableCell>
+            <TableCell style={{ color: "#61dafb", fontWeight: "bold" }}>Value</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index}>
-              <TableCell>{row.time}</TableCell>
-              <TableCell>{row.value}</TableCell>
+              <TableCell style={{ color: "white" }}>{row.time}</TableCell>
+              <TableCell style={{ color: "white" }}>{row.value}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,15 +1,20 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
 const Graph = ({ data }) => {
   return (
-    <LineChart width={600} height={300} data={data}>
-      <XAxis dataKey="time" />
-      <YAxis />
-      <Tooltip />
-      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-    </LineChart>
+    <div className="graph-container">
+      <h2>Pollution Trend</h2>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={data}>
+          <XAxis dataKey="time" stroke="#61dafb" />
+          <YAxis stroke="#61dafb" />
+          <Tooltip />
+          <CartesianGrid stroke="#444" strokeDasharray="5 5" />
+          <Line type="monotone" dataKey="value" stroke="#61dafb" strokeWidth={3} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
