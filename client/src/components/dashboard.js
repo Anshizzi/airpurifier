@@ -1,7 +1,7 @@
 import React from "react";
 import Graph from "./Graph";
 import SensorData from "./SensorData";
-import DataTable from "./table";
+import DataTable from "./Table";
 
 const Dashboard = ({ data }) => {
   return (
