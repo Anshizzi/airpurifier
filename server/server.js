@@ -10,11 +10,11 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
-// ✅ Import and Use API Routes
+// Import and Use API Routes
 const dataRoutes = require("./src/routes/dataRoutes.js");
 app.use("/api", dataRoutes); // Now /api/data and /api/update will work
 
-// ✅ MongoDB Connection
+// MongoDB Connection
 const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/yourDatabase";
 
 const connectDB = async () => {
@@ -36,14 +36,14 @@ const connectDB = async () => {
 // Call the function to connect to MongoDB
 connectDB();
 
-// ✅ Sample Route to Check Server
+// Sample Route to Check Server
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// ✅ Start Server
+// Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(` Server running on http://localhost:${PORT}`);
 });
 
 

@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 
-const csvFilePath = path.join(__dirname, '../../data/sample.csv'); // ✅ Correct path
+const csvFilePath = path.join(__dirname, '../../data/sample.csv');
 
-// ✅ Function to read data from CSV
+// Function to read data from CSV
 const getData = (req, res) => {
     let results = [];
     fs.createReadStream(csvFilePath)
@@ -19,7 +19,7 @@ const getData = (req, res) => {
         });
 };
 
-// ✅ Function to update CSV file
+// Function to update CSV file
 const updateCSV = (req, res) => {
     const newData = req.body;
     

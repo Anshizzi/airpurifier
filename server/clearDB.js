@@ -13,7 +13,7 @@ async function clearDatabase() {
 
     console.log("Connected to MongoDB. Deleting data...");
     
-    await Data.deleteMany({}).maxTimeMS(5000); // Set a 5s timeout
+    await Data.deleteMany({}).maxTimeMS(5000); // 5s timeout
     console.log("Database cleared successfully.");
 
     mongoose.connection.close();
