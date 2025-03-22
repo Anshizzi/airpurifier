@@ -25,12 +25,18 @@ async function processCSV() {
     await DataModel.deleteMany({});
     console.log("Old data deleted!");
 
-    // Read and insert new data
     const results = [];
 
     fs.createReadStream(csvFilePath)
       .pipe(csv())
       .on("data", (row) => {
+        // Trim values to remove any extra spaces
+        Object.keys(row).forEach((key) => {
+          row[key] = row[key]?.trim();
+        });
+
+        console.log("Processing row:", row); // Debugging log
+
         let value = parseFloat(row.value);
         let timestamp = isValidDate(row.timestamp) ? new Date(row.timestamp) : null;
 
@@ -58,5 +64,5 @@ async function processCSV() {
   }
 }
 
+// Run the process
 processCSV();
-
