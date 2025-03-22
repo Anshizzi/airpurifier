@@ -1,4 +1,4 @@
-const DataModel = require("../models/DataModel");
+const DataModel = require("./datamodel");
 
 exports.getData = async (req, res) => {
   try {
