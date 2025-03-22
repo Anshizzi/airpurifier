@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('../data-service/db');
-const DataModel = require('../data-service/datamodel');
+const DataModel = require('../data-service/datamodel.js');
 const processCSV = require('./updateCSV');
 const { readCSV } = require('./csvReader'); // ✅ Import csvReader.js
 
