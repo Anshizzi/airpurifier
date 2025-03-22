@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const connectDB = require('./db');
-const DataModel = require('./DataModel');
+const connectDB = require('../data-service/db');
+const DataModel = require('../data-service/datamodel');
 const processCSV = require('./updateCSV');
 
 const app = express();
