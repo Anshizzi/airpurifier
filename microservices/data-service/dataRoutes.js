@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { getData } = require("./datacontrollers");
+const datacontrollers = require("./datacontrollers");
 
 
 // ✅ API to fetch sensor data
-router.get("/data",  dataController.getData);
+router.get("/data",  datacontrollers.getData);
 
 
 module.exports = router;

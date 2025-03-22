@@ -1,7 +1,8 @@
 const express = require("express");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const cors = require("cors");
-require("dotenv").config(); // Load environment variables
+require('dotenv').config({ path: '../.env' });
+ // Load environment variables
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ Proxy requests to the CSV Service
-app.use("/csv", createProxyMiddleware({ target: "http://localhost:5001", changeOrigin: true }));
+app.use("/csv-service", createProxyMiddleware({ target: "http://localhost:5001", changeOrigin: true }));
 
 // ✅ Proxy requests to the Data Service
-app.use("/api", createProxyMiddleware({ target: "http://localhost:5002", changeOrigin: true }));
+app.use("/data-service", createProxyMiddleware({ target: "http://localhost:5002", changeOrigin: true }));
 
 
 
