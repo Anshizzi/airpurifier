@@ -1,23 +1,32 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+const connectDB = require('./db');
+const DataModel = require('./DataModel');
+const processCSV = require('./updateCSV');
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5001;
 
-// Middleware
-app.use(cors());
+// Connect to Database
+connectDB();
+
 app.use(express.json());
 
-// ✅ Start CSV Updater
-require("./updateCSV");
-
-app.get("/", (req, res) => {
-  res.send("CSV Service is Running & Updating Data!");
+// API to Fetch Data from Database
+app.get('/api/data', async (req, res) => {
+    try {
+        const data = await DataModel.find();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching data" });
+    }
 });
 
-// Start Server
+// Run CSV Processing on Server Start
+processCSV();
+
 app.listen(PORT, () => {
-  console.log(`✅ CSV Service running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
