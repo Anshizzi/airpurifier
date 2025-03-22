@@ -17,14 +17,14 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
-  app.get("/", (req, res) => {
+  app.get("/api/data", (req, res) => {
     res.send("✅ Data Service is Running!");
   });
   
 
 // Routes
 const dataRoutes = require("./dataroutes");
-app.use("/", dataRoutes);
+app.use('/api/data', dataRoutes);
 
 // Start Server
 app.listen(PORT, () => {
