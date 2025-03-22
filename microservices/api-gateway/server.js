@@ -16,15 +16,16 @@ app.use("/csv", createProxyMiddleware({ target: "http://localhost:5001", changeO
 // ✅ Proxy requests to the Data Service
 app.use("/api", createProxyMiddleware({ target: "http://localhost:5002", changeOrigin: true }));
 
-// ✅ Proxy requests to the Notification Service (if used)
-app.use(
-  "/ws",
-  createProxyMiddleware({ target: "http://localhost:5003", ws: true, changeOrigin: true })
-);
+
 
 // ✅ Health check route
-app.get("/", (req, res) => {
-  res.send("🚀 API Gateway is running!");
+app.get('/api/data', async (req, res) => {
+  try {
+      const data = await DataModel.find();
+      res.json(data);
+  } catch (err) {
+      res.status(500).json({ error: "Error fetching data" });
+  }
 });
 
 // Start API Gateway
