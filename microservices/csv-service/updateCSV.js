@@ -7,7 +7,7 @@ const connectDB = require('../data-service/db.js');
 
 connectDB(); // Ensure database connection before processing CSV
 
-const csvFilePath = path.join(__dirname, 'sample.csv');
+const csvFilePath = path.join(__dirname, './sample.csv');
 
 async function processCSV() {
     try {
