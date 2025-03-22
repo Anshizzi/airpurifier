@@ -16,6 +16,8 @@ async function processCSV() {
             throw new Error("DataModel is not defined correctly.");
         }
 
+       
+
         // Clear existing data
         await DataModel.deleteMany({});
         console.log("Old data deleted!");
