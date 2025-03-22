@@ -1,67 +1,50 @@
-const fs = require("fs");
-const path = require("path");
-const mongoose = require("mongoose");
-const csv = require("csv-parser");
-require("dotenv").config();
-const DataModel = require("../data-service/DataModel"); // ✅ Import from data-service
+const fs = require('fs');
+const path = require('path');
+const csv = require('csv-parser');
+const mongoose = require('mongoose');
+const DataModel = require('../data-service/datamodel');
+const connectDB = require('..data-service/db');
 
-const csvFilePath = path.join(__dirname, "sample.csv");
+connectDB(); // Ensure database connection before processing CSV
 
-// ✅ MongoDB Connection
-const mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/yourDatabase";
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const csvFilePath = path.join(__dirname, 'sample.csv');
 
-const db = mongoose.connection;
-db.once("open", () => console.log("✅ Connected to MongoDB from CSV Service"));
-db.on("error", (err) => console.error("❌ MongoDB Connection Error:", err));
+async function processCSV() {
+    try {
+        // Ensure DataModel is properly recognized
+        if (!DataModel || typeof DataModel.deleteMany !== 'function') {
+            throw new Error("DataModel is not defined correctly.");
+        }
 
-// ✅ Read CSV & Update MongoDB
-const updateMongoDB = async () => {
-  try {
-    const results = [];
-    fs.createReadStream(csvFilePath)
-      .pipe(csv(["name", "value", "timestamp"])) // ✅ Match CSV headers
-      .on("data", (row) => results.push(row))
-      .on("end", async () => {
-        console.log("📂 CSV Parsed:", results);
-
-        // ✅ Clear Old Data & Insert New Data
+        // Clear existing data
         await DataModel.deleteMany({});
-        await DataModel.insertMany(results);
+        console.log("Old data deleted!");
 
-        console.log("✅ MongoDB Updated with CSV Data");
-      });
-  } catch (err) {
-    console.error("❌ Error updating MongoDB:", err);
-  }
-};
-
-// ✅ Ensure CSV file exists & has headers
-if (!fs.existsSync(csvFilePath)) {
-  fs.writeFileSync(csvFilePath, "name,value,timestamp\n", { flag: "wx" });
+        // Read and insert new data
+        const results = [];
+        fs.createReadStream(csvFilePath)
+            .pipe(csv())
+            .on('data', (row) => {
+                results.push({
+                    name: row.name,
+                    value: parseFloat(row.value),
+                    timestamp: new Date(row.timestamp)
+                });
+            })
+            .on('end', async () => {
+                try {
+                    await DataModel.insertMany(results);
+                    console.log("CSV Data Imported Successfully!");
+                    mongoose.connection.close();
+                } catch (err) {
+                    console.error("Error inserting CSV data:", err);
+                }
+            });
+    } catch (err) {
+        console.error("Error processing CSV:", err);
+    }
 }
 
-// ✅ Function to generate and append new CSV data
-const generateRandomData = () => {
-  const timestamp = new Date().toISOString();
-  const randomValue = Math.floor(Math.random() * 100);
-  return `Sensor,${randomValue},${timestamp}\n`;
-};
+processCSV();
 
-const updateCSV = () => {
-  fs.appendFile(csvFilePath, generateRandomData(), (err) => {
-    if (err) console.error("❌ Error updating CSV:", err);
-    else {
-      console.log("✅ CSV updated with new data");
-      updateMongoDB(); // ✅ Sync MongoDB after update
-    }
-  });
-};
-
-// ✅ Update CSV every 5 seconds
-setInterval(updateCSV, 5000);
-console.log("📂 CSV Service: Auto-updating CSV & MongoDB every 5 seconds...");
 
