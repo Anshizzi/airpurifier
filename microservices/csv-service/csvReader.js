@@ -3,7 +3,7 @@ const csv = require('csv-parser');
 const DataModel = require('../data-service/datamodel');
 const path = require('path');
 
-const csvFilePath = path.join(__dirname, '../../data/sample.csv');
+const csvFilePath = path.join(__dirname, './sample.csv');
 
 // Read and update MongoDB from CSV
 const readCSV = async () => {
