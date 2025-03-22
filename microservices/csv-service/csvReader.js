@@ -1,6 +1,6 @@
 const fs = require('fs');
 const csv = require('csv-parser');
-const DataModel = require('../models/DataModel');
+const DataModel = require('../data-service/datamodel');
 const path = require('path');
 
 const csvFilePath = path.join(__dirname, '../../data/sample.csv');
@@ -18,5 +18,6 @@ const readCSV = async () => {
       console.log('CSV data updated in the database');
     });
 };
+module.exports = { readCSV };
 
 // Watch for CSV changes
