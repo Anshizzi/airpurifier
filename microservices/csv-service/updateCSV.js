@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 const mongoose = require('mongoose');
-const DataModel = require('../data-service/datamodel');
-const connectDB = require('..data-service/db');
+const DataModel = require('../data-service/datamodel.js');
+const connectDB = require('../data-service/db.js');
 
 connectDB(); // Ensure database connection before processing CSV
 
