@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Graph from "./Graph";
 import SensorData from "./SensorData";
 import DataTable from "./Table";
-import "../App.css"; 
+import "../App.css";
 
-const Dashboard = ({ data }) => {
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    console.log("Fetching sensor data..."); 
+    fetch("/api/sensors")
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("Received data:", result); 
+        setData(result || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        setData([]); 
+      });
+  }, []);
+
   return (
     <div className="dashboard">
       <h1 className="title">Air Pollution Levels</h1>

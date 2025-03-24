@@ -2,28 +2,30 @@
   "name": "airpurifier",
   "version": "1.0.0",
   "private": true,
+  "description": "port { useState } from \"react\"; import { Card, CardContent } from \"@/components/ui/card\"; import { Button } from \"@/components/ui/button\"; import { Slider } from \"@/components/ui/slider\";",
+  "keywords": [],
+  "homepage": "https://github.com/Anshizzi/airpurifier#readme",
+  "bugs": {
+    "url": "https://github.com/Anshizzi/airpurifier/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anshizzi/airpurifier.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "install-all": "npm install --prefix client && npm install --prefix server",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Anshizzi/airpurifier.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Anshizzi/airpurifier/issues"
-  },
-  "homepage": "https://github.com/Anshizzi/airpurifier#readme",
-  "devDependencies": {
-    "concurrently": "^9.1.2"
-  },
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }

@@ -1,30 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-
-const generateRandomData = () => {
-  const now = new Date();
-  return Array.from({ length: 10 }, (_, i) => ({
-    time: new Date(now.getTime() - i * 5000).toLocaleTimeString(),
-    value: (Math.random() * 100).toFixed(2), // Random pollution level between 0-100
-  })).reverse();
-};
+import Login from "./components/Login"; // Ensure Login.js exists in ./components
 
 const App = () => {
-  const [data, setData] = useState(generateRandomData());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setData(generateRandomData());
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [isLoggedIn] = useState(false); // Remove setIsLoggedIn if not used
 
   return (
-    <div>
-      <Dashboard data={data} />
-    </div>
+    <Router>
+      <div className="navbar">
+        <div className="nav-links">
+          <Link to="/">Dashboard</Link>
+          <Link to="/about">About</Link>
+        </div>
+        <div className="login-btn">
+          <Link to="/login">
+            {isLoggedIn ? "Logout" : "Login"}
+          </Link>
+        </div>
+      </div>
+
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 };
 
 export default App;
+  

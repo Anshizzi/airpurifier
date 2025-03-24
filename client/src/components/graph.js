@@ -1,7 +1,11 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const Graph = ({ data }) => {
+const Graph = ({ data = [] }) => {  // ✅ Ensure data is always an array
+  if (!Array.isArray(data) || data.length === 0) {
+    return <p style={{ textAlign: "center", color: "gray" }}>No data available</p>;  // ✅ Show message instead of blank screen
+  }
+
   return (
     <div className="graph-container">
       <h2>Pollution Trend</h2>

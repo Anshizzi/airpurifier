@@ -1,65 +1,84 @@
-body {
-  background-color: black;
-  color: white;
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
+
+.navbar {
+  background: #111;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between; /* Space between links and login button */
+  align-items: center;
+  box-shadow: 0px 2px 8px rgba(0, 174, 255, 0.5);
 }
 
-.dashboard {
-  text-align: center;
-  padding: 0px;
+.nav-links {
+  display: flex;
+  gap: 20px;
 }
 
-.title {
-  margin-top: 20px;
-  font-size: 2rem;
+.navbar a {
   color: #00aaff;
-  text-align: center;
+  text-decoration: none;
+  font-size: 1.2rem;
   font-family: 'Poppins', sans-serif;
   font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
 }
 
-.content {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 20px;
-  flex-wrap: wrap;
+.login-btn {
+  margin-left: auto;
 }
 
-.box {
-  background: #222;
+.login-btn a {
+  background-color: #00aaff;
+  color: black;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.login-btn a:hover {
+  background-color: #0088cc;
+  transform: scale(1.05);
+}
+
+/* Login Page Styling */
+.login-container {
+  width: 300px;
+  margin: 100px auto;
   padding: 20px;
-  border-radius: 10px;
+  background: #222;
   box-shadow: 0px 0px 10px rgba(0, 174, 255, 0.5);
-  width: 45%;
+  border-radius: 10px;
+  text-align: center;
 }
 
-.sensor-box ul {
-  list-style: none;
-  padding: 0;
+.login-container h2 {
+  color: #00aaff;
 }
 
-.sensor-box li {
-  background: #333;
-  margin: 5px 0;
+.login-container input {
+  width: 100%;
   padding: 10px;
+  margin: 10px 0;
+  border: none;
   border-radius: 5px;
 }
 
-.table-container {
-  background-color: #222 !important;
-  box-shadow: 0px 0px 10px rgba(0, 174, 255, 0.5);
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #00aaff;
+  border: none;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.card {
-  background-color: rgba(255, 255, 255, 0.1); /* Subtle transparency */
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  transition: all 0.3s ease-in-out;
+.login-container button:hover {
+  background-color: #0088cc;
+  transform: scale(1.05);
 }
