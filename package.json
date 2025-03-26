@@ -1,9 +1,7 @@
 {
   "name": "airpurifier",
   "version": "1.0.0",
-  "private": true,
-  "description": "port { useState } from \"react\"; import { Card, CardContent } from \"@/components/ui/card\"; import { Button } from \"@/components/ui/button\"; import { Slider } from \"@/components/ui/slider\";",
-  "keywords": [],
+  "description": "Air pollution monitoring application",
   "homepage": "https://github.com/Anshizzi/airpurifier#readme",
   "bugs": {
     "url": "https://github.com/Anshizzi/airpurifier/issues"
@@ -23,7 +21,11 @@
     "client": "npm start --prefix client"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

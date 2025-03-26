@@ -1,13 +1,14 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api/sensor-data';
+import Papa from 'papaparse';
+import mockData from './mockSensorData.csv';
 
 export const fetchSensorData = async () => {
-    try {
-        const response = await axios.get(API_URL);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching sensor data:', error);
-        return [];
-    }
+  try {
+    return mockData.map(row => ({
+      time: row.time,
+      value: parseFloat(row.value)
+    }));
+  } catch (error) {
+    console.error('Error fetching mock data:', error);
+    return [];
+  }
 };

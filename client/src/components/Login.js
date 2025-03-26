@@ -1,34 +1,51 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    alert(`Logging in with Email: ${email}`);
+    if (email && password) {
+      localStorage.setItem("currentUser", email);
+      setIsLoggedIn(true);
+      navigate("/");
+    }
+  };
+
+  const handleContinueWithoutLogin = () => {
+    navigate("/");
   };
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
+      <h2 className="login-title">Login</h2>
+      <form className="login-form" onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <button type="submit">Login</button>
+        <button type="button" className="guest-btn" onClick={handleContinueWithoutLogin}>
+          Continue Without Login
+        </button>
       </form>
+      <p>
+        Need an account? <a href="/signup">Sign Up</a>
+      </p>
     </div>
   );
 };
