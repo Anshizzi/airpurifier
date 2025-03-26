@@ -17,24 +17,24 @@ app.get("/", (req, res) => {
 
 // ✅ Proxy requests to the CSV Processing Service
 app.use("/csv-service", createProxyMiddleware({ 
-  target: "http://localhost:5001", 
+  target: "http://0.0.0.0:5001", 
   changeOrigin: true 
 }));
 
 // ✅ Proxy requests to the Data Service
 app.use("/data-service", createProxyMiddleware({ 
-  target: "http://localhost:5002", 
+  target: "http://0.0.0.0:5002", 
   changeOrigin: true 
 }));
 
-// ✅ Proxy `/api/data` to Data Service (Fix for missing `DataModel`)
+// ✅ Proxy `/api/data` to Data Service
 app.use("/api/data", createProxyMiddleware({ 
-  target: "http://localhost:5002", 
+  target: "http://0.0.0.0:5002", 
   changeOrigin: true 
 }));
 
-// Start API Gateway
-app.listen(PORT, () => {
-  console.log(`🌍 API Gateway running on http://localhost:${PORT}`);
+// Start API Gateway on all network interfaces
+global.HOST = '0.0.0.0';
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🌍 API Gateway running on http://${global.HOST}:${PORT}`);
 });
-
