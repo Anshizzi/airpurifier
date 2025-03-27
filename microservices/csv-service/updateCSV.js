@@ -36,21 +36,21 @@ async function processCSV() {
                     if (results.length > 0) {
                         await DataModel.deleteMany({}); // Clear old data
                         await DataModel.insertMany(results);
-                        console.log("✅ CSV Data Imported Successfully!");
+                        console.log("CSV Data Imported Successfully!");
                     } else {
-                        console.warn("⚠️ No valid data found in CSV.");
+                        console.warn("No valid data found in CSV.");
                     }
                 } catch (err) {
-                    console.error("❌ Error inserting CSV data:", err);
+                    console.error("Error inserting CSV data:", err);
                 }
             });
 
     } catch (err) {
-        console.error("❌ Error processing CSV:", err);
+        console.error("Error processing CSV:", err);
     }
 }
 
-// 🔄 Watch CSV for Real-Time Changes
+// Watch CSV for Real-Time Changes
 chokidar.watch(csvFilePath).on("change", () => {
     console.log("🟠 CSV file changed! Re-processing...");
     processCSV();

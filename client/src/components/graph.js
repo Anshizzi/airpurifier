@@ -1,9 +1,9 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const Graph = ({ data = [] }) => {  // ✅ Ensure data is always an array
+const Graph = ({ data = [] }) => { 
   if (!Array.isArray(data) || data.length === 0) {
-    return <p style={{ textAlign: "center", color: "gray" }}>No data available</p>;  // ✅ Show message instead of blank screen
+    return <p style={{ textAlign: "center", color: "gray" }}>No data available</p>;  
   }
 
   return (

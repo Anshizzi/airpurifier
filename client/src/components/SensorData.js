@@ -1,6 +1,6 @@
 import React from "react";
 
-const SensorData = ({ data = [] }) => { //data is always an array
+const SensorData = ({ data = [] }) => { 
   return (
     <div className="sensor-box">
       <h2>Live Sensor Data</h2>
@@ -13,7 +13,7 @@ const SensorData = ({ data = [] }) => { //data is always an array
           ))}
         </ul>
       ) : (
-        <p>No sensor data available</p> //empty state
+        <p>No sensor data available</p> 
       )}
     </div>
   );

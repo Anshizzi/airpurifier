@@ -25,13 +25,10 @@ const Dashboard = () => {
       }
     };
 
-    // Initial fetch
     fetchData();
 
-    // Set up periodic polling
-    const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    const intervalId = setInterval(fetchData, 5000); 
 
-    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 

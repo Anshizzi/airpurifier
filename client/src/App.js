@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
+import About from "./components/About";
 import "./App.css";
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/continue" element={<Dashboard />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

@@ -6,6 +6,6 @@ const dataSchema = new mongoose.Schema({
     timestamp: Date
 });
 
-const DataModel = mongoose.model('DataModel', dataSchema); // ✅ Correct usage
+const DataModel = mongoose.model('DataModel', dataSchema);
 
 module.exports = DataModel;

@@ -21,31 +21,34 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-title">Login</h2>
-      <form className="login-form" onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-        <button type="button" className="guest-btn" onClick={handleContinueWithoutLogin}>
-          Continue Without Login
-        </button>
-      </form>
-      <p>
-        Need an account? <a href="/signup">Sign Up</a>
-      </p>
+    <div className="login-page">
+      <div className="login-content">
+        <h1>Welcome Back</h1>
+        <p>Access real-time air pollution data with your account.</p>
+        <form className="login-form" onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className="login-btn">Login</button>
+          <button type="button" className="guest-btn" onClick={handleContinueWithoutLogin}>
+            Continue as Guest
+          </button>
+        </form>
+        <p className="signup-link">
+          New here? <a href="/signup">Create an account</a>
+        </p>
+      </div>
     </div>
   );
 };
