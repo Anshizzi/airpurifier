@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
-
-const generateRandomData = () => {
-  const now = new Date();
-  return Array.from({ length: 10 }, (_, i) => ({
-    time: new Date(now.getTime() - i * 5000).toLocaleTimeString(),
-    value: (Math.random() * 100).toFixed(2), // Random pollution level between 0-100
-  })).reverse();
-};
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import About from "./components/About";
+import "./App.css";
 
 const App = () => {
-  const [data, setData] = useState(generateRandomData());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setData(generateRandomData());
-    }, 5000);
-
-    return () => clearInterval(interval);
+    const currentUser = localStorage.getItem("currentUser");
+    setIsLoggedIn(!!currentUser);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setIsLoggedIn(false);
+  };
+
   return (
-    <div>
-      <Dashboard data={data} />
-    </div>
+    <Router>
+      <div className="navbar">
+        <div className="nav-links">
+          <Link to="/">Dashboard</Link>
+          <Link to="/about">About</Link>
+        </div>
+        <div className="login-btn">
+          {isLoggedIn ? (
+            <Link to="/login" onClick={handleLogout}>
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
+        </div>
+      </div>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
   );
 };
 

@@ -1,13 +1,61 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api/sensor-data';
+const API_URL = 'http://localhost:4000';
 
 export const fetchSensorData = async () => {
-    try {
-        const response = await axios.get(API_URL);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching sensor data:', error);
-        return [];
+  try {
+    const response = await fetch(`${API_URL}/sensor-data`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching sensor data:', error);
+    throw error;
+  }
+};
+
+export const login = async (email, password) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Login failed');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+};
+
+export const signup = async (email, password) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Signup failed');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Signup error:', error);
+    throw error;
+  }
 };

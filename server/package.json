@@ -1,0 +1,26 @@
+{
+  "name": "airpurifier-server",
+  "version": "1.0.0",
+  "description": "Backend services for air purifier monitoring system",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:csv\" \"npm run start:api\"",
+    "start:csv": "cd csv-service && node server.js",
+    "start:api": "cd api-gateway && node server.js",
+    "dev": "concurrently \"npm run dev:csv\" \"npm run dev:api\"",
+    "dev:csv": "cd csv-service && nodemon server.js",
+    "dev:api": "cd api-gateway && nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "concurrently": "^9.1.2"
+  }
+}

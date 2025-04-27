@@ -1,10 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Graph from "./Graph";
 import SensorData from "./SensorData";
-import DataTable from "./Table";
-import "../App.css"; 
+import DataTable from "./DataTable";
+import "../App.css";
+import { fetchSensorData } from "../api/sensorAPI";
 
-const Dashboard = ({ data }) => {
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const sensorData = await fetchSensorData();
+        setData(sensorData);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch sensor data: " + err.message);
+        setData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    
+    // Poll for new data every 30 seconds
+    const intervalId = setInterval(fetchData, 30000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="dashboard">
+        <h1 className="title">Loading Sensor Data...</h1>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard">
+        <h1 className="title">Error</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <h1 className="title">Air Pollution Levels</h1>
