@@ -1,60 +1,24 @@
-const fs = require("fs");
-const path = require("path");
-const csv = require("csv-parser");
-const mongoose = require("mongoose");
-const chokidar = require("chokidar");
-const DataModel = require("../data-service/datamodel.js");
-const connectDB = require("../data-service/db.js");
+const fs = require('fs');
+const path = require('path');
 
-// Path to CSV file
-const csvFilePath = path.join(__dirname, "sample.csv");
-
-async function processCSV() {
+exports.updateCSV = (req, res) => {
     try {
-        await connectDB(); // Ensure database connection
+        const newData = req.body;
 
-        console.log("🔄 Processing CSV file...");
+        const csvFilePath = path.join(__dirname, 'sample.csv');
 
-        const results = [];
+        const csvData = newData.map(row => Object.values(row).join(',')).join('\n');
 
-        fs.createReadStream(csvFilePath)
-            .pipe(csv())
-            .on("data", (row) => {
-                console.log("📝 Processing row:", row);
-
-                let value = parseFloat(row.value);
-                let timestamp = row.timestamp && !isNaN(new Date(row.timestamp).getTime()) ? new Date(row.timestamp) : new Date();
-
-                if (!isNaN(value)) {
-                    results.push({ name: row.name, value, timestamp });
-                } else {
-                    console.warn(`⚠️ Skipping invalid row: ${JSON.stringify(row)}`);
-                }
-            })
-            .on("end", async () => {
-                try {
-                    if (results.length > 0) {
-                        await DataModel.deleteMany({}); // Clear old data
-                        await DataModel.insertMany(results);
-                        console.log("✅ CSV Data Imported Successfully!");
-                    } else {
-                        console.warn("⚠️ No valid data found in CSV.");
-                    }
-                } catch (err) {
-                    console.error("❌ Error inserting CSV data:", err);
-                }
-            });
-
-    } catch (err) {
-        console.error("❌ Error processing CSV:", err);
+        fs.writeFile(csvFilePath, csvData, (err) => {
+            if (err) {
+                console.error('Error writing CSV:', err);
+                return res.status(500).json({ message: 'Error updating CSV' });
+            }
+            console.log('CSV updated successfully!');
+            res.json({ message: 'CSV updated successfully' });
+        });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
-
-// 🔄 Watch CSV for Real-Time Changes
-chokidar.watch(csvFilePath).on("change", () => {
-    console.log("🟠 CSV file changed! Re-processing...");
-    processCSV();
-});
-
-// Run Process Initially
-processCSV();
+};

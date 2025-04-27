@@ -3,8 +3,8 @@ const axios = require('axios');
 const app = express();
 app.use(express.json());
 
-const CSV_SERVICE_URL = 'http://localhost:5001';
-const DATA_SERVICE_URL = 'http://localhost:5002';
+const CSV_SERVICE_URL = 'http://172.16.112.20:5001';
+const DATA_SERVICE_URL = 'http://172.16.112.20:5002';
 
 // API Health Check
 app.get('/', (req, res) => {

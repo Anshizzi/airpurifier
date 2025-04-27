@@ -1,13 +1,26 @@
-const express = require("express");
-const router = express.Router();
-const datacontrollers = require("./datacontrollers");
+// dataRoutes.js
 
-// ✅ Default route to check if the API is running
-router.get("/", (req, res) => {
-    res.send("✅ Data Service is Running");
+const express = require('express');
+const router = express.Router();
+const {
+  getAllData,
+  getDataById,
+  createData,
+  updateData,
+  deleteData
+} = require('./datacontrollers');
+
+// 🔥 Health check route
+router.get('/ping', (req, res) => {
+  res.send('🏓 Data Service is alive!');
 });
 
-// ✅ API to fetch sensor data
-router.get('/data', datacontrollers.getData);
+// ✅ Existing routes
+router.get('/', getAllData);
+router.get('/:id', getDataById);
+router.post('/', createData);
+router.put('/:id', updateData);
+router.delete('/:id', deleteData);
 
 module.exports = router;
+

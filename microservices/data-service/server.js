@@ -1,40 +1,44 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const path = require("path");
+// server.js
 
-// Load environment variables from the main microservice folder
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const port = process.env.PORT || 5002;
+const mongoURI = process.env.MONGO_URI;
 
-// Middleware
-app.use(cors());
+// Middleware to parse JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Debugging: Log MongoDB connection string
-console.log("🔍 MONGO_URI:", process.env.MONGO_URI);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch(err => {
-    console.error("❌ MongoDB connection error:", err);
-    process.exit(1); // Exit process if MongoDB connection fails
-  });
-
-// ✅ Health Check Route
-app.get("/", (req, res) => {
-  res.send("✅ Data Service is Running!");
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch((error) => {
+    console.error('❌ MongoDB connection error:', error);
+    process.exit(1); // Exit if DB connection fails
 });
 
-// ✅ API Routes
-const dataRoutes = require("./dataroutes");
-app.use("/api", dataRoutes); // Ensuring all routes are correctly prefixed
+// Import and use your routes
+const dataRoutes = require('./dataRoutes');
+app.use('/data', dataRoutes);
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`📡 Data Service running on port ${PORT}`);
+// Add a simple GET / route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Data Service 📡');
 });
+
+// Start server and bind to your fixed IP
+const HOST = '172.16.112.20';
+
+app.listen(port, HOST, () => {
+    console.log(`📡 Data Service running on http://${HOST}:${port}`);
+});
+
+
