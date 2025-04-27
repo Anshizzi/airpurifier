@@ -3,7 +3,7 @@ const path = require('path');
 const csv = require('csv-parser');
 
 // Use Vercel's tmp directory for CSV storage in production
-const DATA_DIR = '/tmp';
+const DATA_DIR = process.env.NODE_ENV === 'production' ? '/tmp' : path.join(__dirname);
 
 // CSV file paths
 const SENSOR_DATA_FILE = path.join(DATA_DIR, 'sample.csv');
