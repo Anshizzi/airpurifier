@@ -1,40 +1,40 @@
-const express = require("express");
-const { createProxyMiddleware } = require("http-proxy-middleware");
-const cors = require("cors");
-require('dotenv').config({ path: '../.env' }); // Load environment variables
-
+const express = require('express');
+const axios = require('axios');
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
 app.use(express.json());
 
-// ✅ Root Route (Fix for "Cannot GET /" error)
-app.get("/", (req, res) => {
-  res.send("🚀 API Gateway is running! Use /csv-service or /data-service to access microservices.");
+const CSV_SERVICE_URL = 'http://localhost:5001';
+const DATA_SERVICE_URL = 'http://localhost:5002';
+
+// API Health Check
+app.get('/', (req, res) => {
+  res.send('API Gateway is running 🚀');
 });
 
-// ✅ Proxy requests to the CSV Processing Service
-app.use("/csv-service", createProxyMiddleware({ 
-  target: "http://0.0.0.0:5001", 
-  changeOrigin: true 
-}));
-
-// ✅ Proxy requests to the Data Service
-app.use("/data-service", createProxyMiddleware({ 
-  target: "http://0.0.0.0:5002", 
-  changeOrigin: true 
-}));
-
-// ✅ Proxy `/api/data` to Data Service
-app.use("/api/data", createProxyMiddleware({ 
-  target: "http://0.0.0.0:5002", 
-  changeOrigin: true 
-}));
-
-// Start API Gateway on all network interfaces
-global.HOST = '0.0.0.0';
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🌍 API Gateway running on http://${global.HOST}:${PORT}`);
+// 1. Get real-time Air Purifier Data from CSV Service
+app.get('/devices', async (req, res) => {
+  try {
+    const response = await axios.get(`${CSV_SERVICE_URL}/read-csv`);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching devices:', error.message);
+    res.status(500).json({ message: 'Failed to fetch devices' });
+  }
 });
+
+// 2. (optional) Save devices to MongoDB through Data Service
+app.post('/save-devices', async (req, res) => {
+  try {
+    const response = await axios.post(`${DATA_SERVICE_URL}/add-data`, req.body);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error saving devices:', error.message);
+    res.status(500).json({ message: 'Failed to save devices' });
+  }
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`🌍 API Gateway running on http://0.0.0.0:${PORT}`);
+});
+
