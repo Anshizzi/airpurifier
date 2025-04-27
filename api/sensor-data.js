@@ -17,3 +17,9 @@ module.exports = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch sensor data' });
   }
 };
+const csvServiceHandler = require('./csv-service');
+
+module.exports = async (req, res) => {
+  req.path = '/api/csv-service/sensor-data';
+  return csvServiceHandler(req, res);
+};

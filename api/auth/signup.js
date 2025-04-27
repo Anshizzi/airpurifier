@@ -20,3 +20,9 @@ module.exports = async (req, res) => {
     res.status(error.response?.status || 500).json(error.response?.data || { message: 'Failed to signup' });
   }
 };
+const csvServiceHandler = require('../csv-service');
+
+module.exports = async (req, res) => {
+  req.path = '/api/csv-service/auth/signup';
+  return csvServiceHandler(req, res);
+};
