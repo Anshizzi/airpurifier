@@ -1,8 +1,11 @@
-const API_URL = 'http://localhost:4000';
+// Get the base URL depending on environment
+const API_URL = process.env.REACT_APP_API_URL || 
+                (window.location.hostname === 'localhost' ? 
+                 'http://localhost:4000' : '');
 
 export const fetchSensorData = async () => {
   try {
-    const response = await fetch(`${API_URL}/sensor-data`);
+    const response = await fetch(`${API_URL}/api/sensor-data`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -16,7 +19,7 @@ export const fetchSensorData = async () => {
 
 export const login = async (email, password) => {
   try {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +42,7 @@ export const login = async (email, password) => {
 
 export const signup = async (email, password) => {
   try {
-    const response = await fetch(`${API_URL}/auth/signup`, {
+    const response = await fetch(`${API_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

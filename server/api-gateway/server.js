@@ -1,14 +1,17 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+require('dotenv').config({ path: '../../.env' });
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.API_GATEWAY_PORT || 4000;
 
 app.use(express.json());
 app.use(cors());
 
-const CSV_SERVICE_URL = 'http://localhost:5001';
+const CSV_SERVICE_URL = process.env.NODE_ENV === 'production' 
+  ? process.env.CSV_SERVICE_URL 
+  : `http://localhost:${process.env.CSV_SERVICE_PORT || 5001}`;
 
 app.get('/', (req, res) => {
   res.send('API Gateway is running 🚀');
@@ -35,7 +38,6 @@ app.post('/auth/signup', async (req, res) => {
   }
 });
 
-// Data Routes
 app.get('/sensor-data', async (req, res) => {
   try {
     const response = await axios.get(`${CSV_SERVICE_URL}/sensor-data`);
@@ -46,6 +48,12 @@ app.get('/sensor-data', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🌍 API Gateway running on http://localhost:${PORT}`);
-});
+// Export for Vercel serverless functions
+module.exports = app;
+
+// Only listen to the port if not being deployed as a serverless function
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🌍 API Gateway running on http://localhost:${PORT}`);
+  });
+}

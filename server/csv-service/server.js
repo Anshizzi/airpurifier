@@ -3,35 +3,44 @@ const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 const csv = require('csv-parser');
+require('dotenv').config({ path: '../../.env' });
 
 const app = express();
-const PORT = 5001;
+const PORT = process.env.CSV_SERVICE_PORT || 5001;
 
 app.use(express.json());
 app.use(cors());
 
-const SENSOR_DATA_FILE = 'sample.csv';
-const USERS_FILE = 'users.csv';
+const DATA_DIR = process.env.NODE_ENV === 'production' 
+  ? '/tmp' 
+  : path.join(__dirname);
+
+const SENSOR_DATA_FILE = path.join(DATA_DIR, 'sample.csv');
+const USERS_FILE = path.join(DATA_DIR, 'users.csv');
 
 // Ensure the CSV files exist
 function ensureFileExists(filePath, defaultContent) {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, defaultContent, 'utf8');
-    console.log(`Created ${filePath}`);
+    if (!fs.existsSync(filePath)) {
+      // Create directory if it doesn't exist (for /tmp in production)
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(filePath, defaultContent, 'utf8');
+      console.log(`Created ${filePath}`);
+    }
   }
-}
-
 // Create users.csv if it doesn't exist
 ensureFileExists(
-  USERS_FILE,
-  'email,password\nadmin@example.com,admin123\nuser@example.com,user123'
-);
+    USERS_FILE,
+    'email,password\nadmin@example.com,admin123\nuser@example.com,user123'
+  );
 
 // Create sample.csv if it doesn't exist
 ensureFileExists(
-  SENSOR_DATA_FILE,
-  'deviceId,pm25,co2,temperature,timestamp\n1,25,450,22,2023-04-28T10:00:00Z'
-);
+    SENSOR_DATA_FILE,
+    'deviceId,pm25,co2,temperature,timestamp\n1,25,450,22,2023-04-28T10:00:00Z'
+  );;
 
 // Write data to sensor CSV
 function writeSensorCSV(data) {
@@ -147,6 +156,10 @@ app.get('/sensor-data', (req, res) => {
     });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 CSV Service running on http://localhost:${PORT}`);
-});
+
+module.exports = app;
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 CSV Service running on http://localhost:${PORT}`);
+    });
+  }
